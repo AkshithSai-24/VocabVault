@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Background rounded square -->
+  <rect width="512" height="512" rx="112" fill="#0e0e11"/>
+
+  <!-- Outer glow ring -->
+  <rect width="512" height="512" rx="112" fill="none" stroke="url(#ringGrad)" stroke-width="6" opacity="0.6"/>
+
+  <!-- Open book pages — left -->
+  <path d="M90 170 C90 160 98 152 108 152 L240 158 L240 358 L108 352 C98 352 90 344 90 334 Z"
+        fill="url(#pageLeft)" stroke="#2a2a35" stroke-width="1.5"/>
+
+  <!-- Open book pages — right -->
+  <path d="M422 170 C422 160 414 152 404 152 L272 158 L272 358 L404 352 C414 352 422 344 422 334 Z"
+        fill="url(#pageRight)" stroke="#2a2a35" stroke-width="1.5"/>
+
+  <!-- Spine shadow -->
+  <rect x="240" y="152" width="32" height="206" rx="4" fill="url(#spineGrad)"/>
+
+  <!-- Lines on left page -->
+  <line x1="118" y1="200" x2="228" y2="202" stroke="#2a2a35" stroke-width="2" stroke-linecap="round"/>
+  <line x1="118" y1="218" x2="228" y2="220" stroke="#2a2a35" stroke-width="2" stroke-linecap="round"/>
+  <line x1="118" y1="236" x2="200" y2="237" stroke="#2a2a35" stroke-width="2" stroke-linecap="round"/>
+  <line x1="118" y1="268" x2="228" y2="269" stroke="#1e1e28" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="118" y1="284" x2="228" y2="285" stroke="#1e1e28" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="118" y1="300" x2="192" y2="301" stroke="#1e1e28" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Lines on right page -->
+  <line x1="284" y1="200" x2="394" y2="202" stroke="#2a2a35" stroke-width="2" stroke-linecap="round"/>
+  <line x1="284" y1="218" x2="394" y2="220" stroke="#2a2a35" stroke-width="2" stroke-linecap="round"/>
+  <line x1="284" y1="236" x2="360" y2="237" stroke="#2a2a35" stroke-width="2" stroke-linecap="round"/>
+  <line x1="284" y1="268" x2="394" y2="269" stroke="#1e1e28" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="284" y1="284" x2="394" y2="285" stroke="#1e1e28" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="284" y1="300" x2="350" y2="301" stroke="#1e1e28" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Gold V lettermark — centered on spine -->
+  <path d="M210 178 L256 290 L302 178" stroke="url(#goldGrad)" stroke-width="18"
+        stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Bottom curve of book (shadow) -->
+  <ellipse cx="256" cy="360" rx="140" ry="10" fill="rgba(0,0,0,0.4)"/>
+
+  <!-- Sparkle top-right -->
+  <g transform="translate(368, 128)">
+    <line x1="0" y1="-14" x2="0" y2="14" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
+    <line x1="-14" y1="0" x2="14" y2="0" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
+    <line x1="-8" y1="-8" x2="8" y2="8" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <line x1="8" y1="-8" x2="-8" y2="8" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+  </g>
+
+  <!-- Sparkle small bottom-left -->
+  <g transform="translate(148, 392)">
+    <line x1="0" y1="-8" x2="0" y2="8" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+    <line x1="-8" y1="0" x2="8" y2="0" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  </g>
+
+  <!-- Gradients & defs -->
+  <defs>
+    <linearGradient id="pageLeft" x1="90" y1="250" x2="240" y2="250" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1a1a22"/>
+      <stop offset="100%" stop-color="#15151c"/>
+    </linearGradient>
+    <linearGradient id="pageRight" x1="272" y1="250" x2="422" y2="250" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#15151c"/>
+      <stop offset="100%" stop-color="#1a1a22"/>
+    </linearGradient>
+    <linearGradient id="spineGrad" x1="240" y1="0" x2="272" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0e0e14"/>
+      <stop offset="50%" stop-color="#1c1c28"/>
+      <stop offset="100%" stop-color="#0e0e14"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="210" y1="178" x2="302" y2="290" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e8c96a"/>
+      <stop offset="100%" stop-color="#c9a84c"/>
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#c9a84c" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#c9a84c" stop-opacity="0.6"/>
+    </linearGradient>
+  </defs>
+</svg>
