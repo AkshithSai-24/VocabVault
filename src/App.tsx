@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useVocab } from './hooks/useVocab';
 import WordCard from './components/WordCard';
 import Library from './components/Library';
@@ -16,6 +17,16 @@ function LogoIcon() {
 
 function App() {
   const vocab = useVocab();
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    return (localStorage.getItem('vv-theme') as 'dark' | 'light') || 'dark';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('vv-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
 
   const header = (
     <header className="app__header">
@@ -23,19 +34,29 @@ function App() {
         <LogoIcon />
         <span className="app__logo-text">VocabVault</span>
       </div>
-      {vocab.view === 'lookup' && (
-        <button className="btn btn--outline" onClick={vocab.handleViewLibrary}>
-          My Vault
-          {vocab.library.length > 0 && (
-            <span className="btn__badge">{vocab.library.length}</span>
-          )}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px,1vw,12px)' }}>
+        {vocab.view === 'lookup' && (
+          <button className="btn btn--outline" onClick={vocab.handleViewLibrary}>
+            My Vault
+            {vocab.library.length > 0 && (
+              <span className="btn__badge">{vocab.library.length}</span>
+            )}
+          </button>
+        )}
+        {vocab.view === 'library' && (
+          <button className="btn btn--ghost" onClick={() => vocab.setView('lookup')}>
+            ← Back
+          </button>
+        )}
+        <button
+          className="btn btn--theme"
+          onClick={toggleTheme}
+          aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        >
+          {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-      )}
-      {vocab.view === 'library' && (
-        <button className="btn btn--ghost" onClick={() => vocab.setView('lookup')}>
-          ← Back
-        </button>
-      )}
+      </div>
     </header>
   );
 
