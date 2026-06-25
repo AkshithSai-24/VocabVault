@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { lookupWord } from '../lib/openrouter';
-import { saveWord, fetchAllWords, deleteWord } from '../lib/firebase';
+import { saveWord, fetchAllWords, deleteWord, updateWordGREStatus } from '../lib/firebase';
 import type { WordEntry, AIWordResult } from '../types';
 
 export type AppView = 'lookup' | 'library';
@@ -12,6 +12,7 @@ export function useVocab() {
   const [currentWord, setCurrentWord] = useState('');
   const [customMeaning, setCustomMeaning] = useState('');
   const [useCustom, setUseCustom] = useState(false);
+  const [isGREWord, setIsGREWord] = useState(false);
   const [isLooking, setIsLooking] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
@@ -32,6 +33,7 @@ export function useVocab() {
     setAiResult(null);
     setCustomMeaning('');
     setUseCustom(false);
+    setIsGREWord(false);
     setIsLooking(true);
     try {
       const result = await lookupWord(word);
@@ -59,6 +61,7 @@ export function useVocab() {
         synonyms: aiResult.synonyms,
         source: hasCustom ? 'custom' : 'ai',
         createdAt: Date.now(),
+        isGREWord: isGREWord,
         ...(hasCustom ? { customMeaning: customMeaning.trim() } : {}),
       };
 
@@ -71,7 +74,7 @@ export function useVocab() {
     } finally {
       setIsSaving(false);
     }
-  }, [aiResult, currentWord, useCustom, customMeaning]);
+  }, [aiResult, currentWord, useCustom, customMeaning, isGREWord]);
 
   const handleViewLibrary = useCallback(async () => {
     setView('library');
@@ -86,6 +89,23 @@ export function useVocab() {
       setError(e instanceof Error ? e.message : 'Failed to load library');
     } finally {
       setIsFetching(false);
+    }
+  }, []);
+
+  const handleToggleGRE = useCallback(async (id: string, currentValue: boolean) => {
+    const next = !currentValue;
+    // Optimistic update
+    setLibrary((prev) =>
+      prev.map((w) => (w.id === id ? { ...w, isGREWord: next } : w))
+    );
+    try {
+      await updateWordGREStatus(id, next);
+    } catch (e) {
+      // Revert on failure
+      setLibrary((prev) =>
+        prev.map((w) => (w.id === id ? { ...w, isGREWord: currentValue } : w))
+      );
+      setError(e instanceof Error ? e.message : 'Failed to update GRE status');
     }
   }, []);
 
@@ -111,10 +131,11 @@ export function useVocab() {
     aiResult, currentWord,
     customMeaning, setCustomMeaning,
     useCustom, setUseCustom,
+    isGREWord, setIsGREWord,
     isLooking, isSaving, isFetching,
     error, successMsg,
     library,
-    handleLookup, handleSave, handleViewLibrary, handleDelete,
+    handleLookup, handleSave, handleViewLibrary, handleDelete, handleToggleGRE,
     isAlreadySaved,
   };
 }

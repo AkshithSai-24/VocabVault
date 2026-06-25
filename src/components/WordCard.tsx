@@ -6,16 +6,18 @@ interface Props {
   result: AIWordResult;
   customMeaning: string;
   useCustom: boolean;
+  isGREWord: boolean;
   onCustomMeaningChange: (v: string) => void;
   onToggleCustom: (v: boolean) => void;
+  onToggleGRE: (v: boolean) => void;
   onSave: () => void;
   isSaving: boolean;
   isAlreadySaved: boolean;
 }
 
 const WordCard: React.FC<Props> = ({
-  word, result, customMeaning, useCustom,
-  onCustomMeaningChange, onToggleCustom, onSave, isSaving, isAlreadySaved,
+  word, result, customMeaning, useCustom, isGREWord,
+  onCustomMeaningChange, onToggleCustom, onToggleGRE, onSave, isSaving, isAlreadySaved,
 }) => {
   return (
     <div className="word-card">
@@ -62,6 +64,18 @@ const WordCard: React.FC<Props> = ({
           />
         )}
       </div>
+
+      <label className="word-card__toggle word-card__toggle--gre">
+        <input
+          type="checkbox"
+          checked={isGREWord}
+          onChange={(e) => onToggleGRE(e.target.checked)}
+        />
+        <span className="word-card__toggle-text">
+          <span className="word-card__gre-icon">🎓</span>
+          Mark as GRE Word
+        </span>
+      </label>
 
       <button
         className="btn btn--primary"

@@ -69,6 +69,7 @@ function App() {
             library={vocab.library}
             isFetching={vocab.isFetching}
             onDelete={vocab.handleDelete}
+            onToggleGRE={vocab.handleToggleGRE}
             onBack={() => vocab.setView('lookup')}
           />
         </main>
@@ -137,8 +138,10 @@ function App() {
                 result={vocab.aiResult}
                 customMeaning={vocab.customMeaning}
                 useCustom={vocab.useCustom}
+                isGREWord={vocab.isGREWord}
                 onCustomMeaningChange={vocab.setCustomMeaning}
                 onToggleCustom={vocab.setUseCustom}
+                onToggleGRE={vocab.setIsGREWord}
                 onSave={vocab.handleSave}
                 isSaving={vocab.isSaving}
                 isAlreadySaved={vocab.isAlreadySaved}

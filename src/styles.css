@@ -828,3 +828,163 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+/* ── GRE Word Feature ────────────────────────────────────────────── */
+
+/* GRE toggle in WordCard */
+.word-card__toggle--gre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+  user-select: none;
+}
+
+.word-card__toggle--gre:has(input:checked) {
+  border-color: var(--gre-red, #ef4444);
+  background: rgba(239, 68, 68, 0.07);
+}
+
+.word-card__gre-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* GRE stat card */
+.stat-card--gre {
+  border-color: var(--gre-red, #ef4444) !important;
+  color: var(--gre-red, #ef4444);
+}
+
+.stat-card--gre .stat-card__num {
+  color: var(--gre-red, #ef4444);
+}
+
+/* GRE tag badge on library entries */
+.lib-entry__tag--gre {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--gre-red, #ef4444);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  font-weight: 600;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 99px;
+  letter-spacing: 0.04em;
+}
+
+/* GRE red outline on library entries */
+.lib-entry--gre {
+  border: 2px solid var(--gre-red, #ef4444) !important;
+  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.15), 0 2px 8px rgba(239, 68, 68, 0.08);
+}
+
+.lib-entry--gre.lib-entry--expanded {
+  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.25), 0 4px 16px rgba(239, 68, 68, 0.12);
+}
+
+/* GRE filter button + search input row */
+.library__filters {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.library__filters .search-input {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.btn--filter-gre {
+  flex-shrink: 0;
+  padding: 0 clamp(10px, 2vw, 16px);
+  height: 44px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, color 0.18s;
+  white-space: nowrap;
+}
+
+.btn--filter-gre:hover {
+  border-color: var(--gre-red, #ef4444);
+  color: var(--gre-red, #ef4444);
+}
+
+.btn--filter-gre--active {
+  border-color: var(--gre-red, #ef4444) !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+  color: var(--gre-red, #ef4444) !important;
+}
+
+/* CSS variable for GRE red — works in both light/dark themes */
+:root {
+  --gre-red: #ef4444;
+}
+
+[data-theme='light'] {
+  --gre-red: #dc2626;
+}
+
+/* Responsive: stack filters on tiny screens */
+@media (max-width: 360px) {
+  .library__filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn--filter-gre {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ── GRE toggle button inside expanded library entry ─────────────── */
+.lib-entry__row--gre-toggle {
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.lib-entry__gre-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, color 0.18s;
+  width: 100%;
+  justify-content: center;
+}
+
+.lib-entry__gre-btn:hover {
+  border-color: var(--gre-red);
+  color: var(--gre-red);
+  background: rgba(239, 68, 68, 0.06);
+}
+
+.lib-entry__gre-btn--active {
+  border-color: var(--gre-red) !important;
+  color: var(--gre-red) !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+}
+
+.lib-entry__gre-btn--active:hover {
+  background: rgba(239, 68, 68, 0.14) !important;
+}

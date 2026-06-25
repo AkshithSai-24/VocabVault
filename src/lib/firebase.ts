@@ -8,6 +8,7 @@ import {
   orderBy,
   deleteDoc,
   doc,
+  updateDoc,
   Timestamp,
 } from 'firebase/firestore';
 import type { WordEntry } from '../types';
@@ -44,4 +45,8 @@ export async function fetchAllWords(): Promise<WordEntry[]> {
 
 export async function deleteWord(id: string): Promise<void> {
   await deleteDoc(doc(db, COLLECTION, id));
+}
+
+export async function updateWordGREStatus(id: string, isGREWord: boolean): Promise<void> {
+  await updateDoc(doc(db, COLLECTION, id), { isGREWord });
 }

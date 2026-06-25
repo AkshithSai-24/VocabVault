@@ -5,20 +5,25 @@ interface Props {
   library: WordEntry[];
   isFetching: boolean;
   onDelete: (id: string, word: string) => void;
+  onToggleGRE: (id: string, current: boolean) => void;
   onBack: () => void;
 }
 
-const Library: React.FC<Props> = ({ library, isFetching, onDelete, onBack }) => {
+const Library: React.FC<Props> = ({ library, isFetching, onDelete, onToggleGRE, onBack }) => {
   const [search, setSearch] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [filterGRE, setFilterGRE] = useState(false);
 
-  const filtered = library.filter((w) =>
-    w.word.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = library.filter((w) => {
+    const matchesSearch = w.word.toLowerCase().includes(search.toLowerCase());
+    const matchesGRE = filterGRE ? w.isGREWord === true : true;
+    return matchesSearch && matchesGRE;
+  });
 
   const totalWords = library.length;
   const aiWords = library.filter((w) => w.source === 'ai').length;
   const customWords = library.filter((w) => w.source === 'custom').length;
+  const greWords = library.filter((w) => w.isGREWord).length;
 
   return (
     <div className="library">
@@ -40,15 +45,28 @@ const Library: React.FC<Props> = ({ library, isFetching, onDelete, onBack }) => 
           <span className="stat-card__num">{customWords}</span>
           <span className="stat-card__label">Custom Notes</span>
         </div>
+        <div className="stat-card stat-card--gre">
+          <span className="stat-card__num">{greWords}</span>
+          <span className="stat-card__label">GRE Words</span>
+        </div>
       </div>
 
-      <input
-        className="search-input"
-        type="text"
-        placeholder="Search your words..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <div className="library__filters">
+        <input
+          className="search-input"
+          type="text"
+          placeholder="Search your words..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button
+          className={`btn btn--filter-gre ${filterGRE ? 'btn--filter-gre--active' : ''}`}
+          onClick={() => setFilterGRE((v) => !v)}
+          title="Show only GRE words"
+        >
+          🎓 GRE Only
+        </button>
+      </div>
 
       {isFetching ? (
         <div className="library__loading">
@@ -57,7 +75,9 @@ const Library: React.FC<Props> = ({ library, isFetching, onDelete, onBack }) => 
         </div>
       ) : filtered.length === 0 ? (
         <div className="library__empty">
-          {search ? `No words matching "${search}"` : 'Your vault is empty. Look up some words!'}
+          {search || filterGRE
+            ? `No words matching your filters`
+            : 'Your vault is empty. Look up some words!'}
         </div>
       ) : (
         <div className="library__list">
@@ -66,7 +86,7 @@ const Library: React.FC<Props> = ({ library, isFetching, onDelete, onBack }) => 
             return (
               <div
                 key={entry.id}
-                className={`lib-entry ${isExpanded ? 'lib-entry--expanded' : ''}`}
+                className={`lib-entry ${isExpanded ? 'lib-entry--expanded' : ''} ${entry.isGREWord ? 'lib-entry--gre' : ''}`}
               >
                 <div
                   className="lib-entry__header"
@@ -74,6 +94,9 @@ const Library: React.FC<Props> = ({ library, isFetching, onDelete, onBack }) => 
                 >
                   <div className="lib-entry__title">
                     <span className="lib-entry__word">{entry.word}</span>
+                    {entry.isGREWord && (
+                      <span className="lib-entry__tag lib-entry__tag--gre">🎓 GRE</span>
+                    )}
                     {entry.source === 'custom' && (
                       <span className="lib-entry__tag">custom</span>
                     )}
@@ -118,6 +141,17 @@ const Library: React.FC<Props> = ({ library, isFetching, onDelete, onBack }) => 
                           <span key={s} className="word-card__synonym">{s}</span>
                         ))}
                       </div>
+                    </div>
+                    <div className="lib-entry__row lib-entry__row--gre-toggle">
+                      <button
+                        className={`btn lib-entry__gre-btn ${entry.isGREWord ? 'lib-entry__gre-btn--active' : ''}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (entry.id) onToggleGRE(entry.id, !!entry.isGREWord);
+                        }}
+                      >
+                        🎓 {entry.isGREWord ? 'Remove GRE Tag' : 'Mark as GRE Word'}
+                      </button>
                     </div>
                   </div>
                 )}

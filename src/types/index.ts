@@ -5,6 +5,7 @@ export interface WordEntry {
   example: string;
   synonyms: string[];
   customMeaning?: string;
+  isGREWord?: boolean;
   source: 'ai' | 'custom';
   createdAt: number;
 }
