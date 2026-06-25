@@ -3,7 +3,7 @@ import { lookupWord } from '../lib/openrouter';
 import { saveWord, fetchAllWords, deleteWord, updateWordGREStatus } from '../lib/firebase';
 import type { WordEntry, AIWordResult } from '../types';
 
-export type AppView = 'lookup' | 'library';
+export type AppView = 'lookup' | 'library' | 'flashcards';
 
 export function useVocab() {
   const [view, setView] = useState<AppView>('lookup');
@@ -76,6 +76,23 @@ export function useVocab() {
     }
   }, [aiResult, currentWord, useCustom, customMeaning, isGREWord]);
 
+  const handleViewFlashcards = useCallback(async () => {
+    // If library is empty, fetch first
+    if (library.length === 0) {
+      setIsFetching(true);
+      try {
+        const words = await fetchAllWords();
+        setLibrary(words);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : 'Failed to load library');
+        return;
+      } finally {
+        setIsFetching(false);
+      }
+    }
+    setView('flashcards');
+  }, [library]);
+
   const handleViewLibrary = useCallback(async () => {
     setView('library');
     setIsFetching(true);
@@ -135,7 +152,7 @@ export function useVocab() {
     isLooking, isSaving, isFetching,
     error, successMsg,
     library,
-    handleLookup, handleSave, handleViewLibrary, handleDelete, handleToggleGRE,
+    handleLookup, handleSave, handleViewLibrary, handleViewFlashcards, handleDelete, handleToggleGRE,
     isAlreadySaved,
   };
 }

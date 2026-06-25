@@ -7,9 +7,10 @@ interface Props {
   onDelete: (id: string, word: string) => void;
   onToggleGRE: (id: string, current: boolean) => void;
   onBack: () => void;
+  onFlashcards?: () => void;
 }
 
-const Library: React.FC<Props> = ({ library, isFetching, onDelete, onToggleGRE, onBack }) => {
+const Library: React.FC<Props> = ({ library, isFetching, onDelete, onToggleGRE, onBack, onFlashcards }) => {
   const [search, setSearch] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [filterGRE, setFilterGRE] = useState(false);
@@ -30,6 +31,11 @@ const Library: React.FC<Props> = ({ library, isFetching, onDelete, onToggleGRE, 
       <div className="library__header">
         <button className="btn btn--ghost" onClick={onBack}>← Back</button>
         <h2 className="library__title">Your Vault</h2>
+        {onFlashcards && library.length > 0 && (
+          <button className="btn btn--outline btn--flash" onClick={onFlashcards}>
+            ⚡ Flashcards
+          </button>
+        )}
       </div>
 
       <div className="stats-row">

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useVocab } from './hooks/useVocab';
 import WordCard from './components/WordCard';
 import Library from './components/Library';
+import Flashcards from './components/Flashcards';
 
 function LogoIcon() {
   return (
@@ -36,14 +37,21 @@ function App() {
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px,1vw,12px)' }}>
         {vocab.view === 'lookup' && (
-          <button className="btn btn--outline" onClick={vocab.handleViewLibrary}>
-            My Vault
+          <>
+            <button className="btn btn--outline" onClick={vocab.handleViewLibrary}>
+              My Vault
+              {vocab.library.length > 0 && (
+                <span className="btn__badge">{vocab.library.length}</span>
+              )}
+            </button>
             {vocab.library.length > 0 && (
-              <span className="btn__badge">{vocab.library.length}</span>
+              <button className="btn btn--outline btn--flash" onClick={vocab.handleViewFlashcards}>
+                ⚡ Flashcards
+              </button>
             )}
-          </button>
+          </>
         )}
-        {vocab.view === 'library' && (
+        {(vocab.view === 'library' || vocab.view === 'flashcards') && (
           <button className="btn btn--ghost" onClick={() => vocab.setView('lookup')}>
             ← Back
           </button>
@@ -60,6 +68,20 @@ function App() {
     </header>
   );
 
+  if (vocab.view === 'flashcards') {
+    return (
+      <div className="app">
+        {header}
+        <main className="app__main">
+          <Flashcards
+            library={vocab.library}
+            onBack={() => vocab.setView('lookup')}
+          />
+        </main>
+      </div>
+    );
+  }
+
   if (vocab.view === 'library') {
     return (
       <div className="app">
@@ -71,6 +93,7 @@ function App() {
             onDelete={vocab.handleDelete}
             onToggleGRE={vocab.handleToggleGRE}
             onBack={() => vocab.setView('lookup')}
+            onFlashcards={vocab.handleViewFlashcards}
           />
         </main>
       </div>
